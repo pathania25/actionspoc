@@ -1,0 +1,17 @@
+name: Protect Main Branch
+on:
+  push:
+    branches:
+      - main
+jobs:
+  protect-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check for direct push
+        run: |
+          if [[ "$GITHUB_REF" =~ ^refs/heads/main$ ]]; then
+            echo "Direct push to main branch is not allowed."
+            exit 1
+          fi
+  
