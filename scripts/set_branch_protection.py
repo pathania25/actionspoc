@@ -93,7 +93,7 @@ def restrict_deployments(repo_owner, repo_name, branch, token):
 # Main function
 if __name__ == "__main__":
     # Define your repository details
-    repo_owner = os.getenv("TOKEN_GITHUB")
+    repo_owner = os.getenv("REPO_OWNER")
     repo_name = os.getenv("REPO_NAME")
     branch = "main"
     token = os.getenv("TOKEN_GITHUB")
