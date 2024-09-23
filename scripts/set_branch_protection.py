@@ -12,7 +12,7 @@ url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/branches/{BRANCH_N
 
 # Headers with authentication
 headers = {
-    "Authorization": f"token {TOKEN_GITHUB}",
+    "Authorization": f"token {GITHUB_TOKEN}",
     "Accept": "application/vnd.github.v3+json"
 }
 
