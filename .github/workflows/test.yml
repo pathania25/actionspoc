@@ -4,14 +4,13 @@ on:
     branches:
       - main
 jobs:
-  protect-main:
+  no-direct-push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Check for direct push
+      - name: Check for Direct Push to Main
         run: |
-          if [[ "$GITHUB_REF" =~ ^refs/heads/main$ ]]; then
-            echo "Direct push to main branch is not allowed."
-            exit 1
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "Direct push to main is not allowed. Please use a pull request.";
+            exit 1;
           fi
   

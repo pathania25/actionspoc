@@ -1,0 +1,12 @@
+# repository_settings.yaml
+branch_protection_rules:
+  - branch: main
+    require_pull_request_approvals: true
+    required_approvers: 
+      - Ravi
+      - Manasa
+      - Monika
+    enforce_admins: true
+    allow_force_pushes: false
+    required_status_checks: []
+    restrict_deployments_to: main

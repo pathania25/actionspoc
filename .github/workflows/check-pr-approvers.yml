@@ -1,0 +1,21 @@
+name: Check PR Approval
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-approvers:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if Ravi and Manasa approved the PR
+        run: |
+          APPROVERS=$(gh pr view ${{ github.event.pull_request.number }} --json reviews --jq '.reviews[].author.login')
+          if [[ $APPROVERS == *"ravi"* ]] && [[ $APPROVERS == *"manasa"* ]]; then
+            echo "Both Ravi and Manasa have approved the PR."
+          else
+            echo "PR requires approval from Ravi and Manasa."
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
