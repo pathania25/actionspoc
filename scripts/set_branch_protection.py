@@ -4,12 +4,12 @@ import os
 
 # GitHub API URL
 # Function to update branch protection rule
-def update_branch_protection(repo_owner, repo_name, branch, token, approvers):
+def update_branch_protection(repo_owner, repo_name, branch, github_token, approvers):
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/branches/{branch}/protection"
 
 # Headers with authentication
 headers = {
-    "Authorization": f"token {token}",
+    "Authorization": f"token {github_token}",
     "Accept": "application/vnd.github.v3+json"
 }
 
@@ -47,11 +47,11 @@ else:
     print(f"Failed to apply branch protection: {response.status_code} {response.text}")
 
 # Function to enforce PR approvals
-def set_code_owner_reviews(repo_owner, repo_name, branch, token, approvers):
+def set_code_owner_reviews(repo_owner, repo_name, branch, github_token, approvers):
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/branches/{branch}/protection/required_pull_request_reviews"
     
     headers = {
-        "Authorization": f"token {token}",
+        "Authorization": f"token {github_token}",
         "Accept": "application/vnd.github.luke-cage-preview+json"
     }
 
@@ -68,11 +68,11 @@ def set_code_owner_reviews(repo_owner, repo_name, branch, token, approvers):
         print(f"Error: {response.status_code} - {response.text}")
 
 # Function to restrict deploys to main branch
-def restrict_deployments(repo_owner, repo_name, branch, token):
+def restrict_deployments(repo_owner, repo_name, branch, github_token):
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/environments/production"
     
     headers = {
-        "Authorization": f"token {token}",
+        "Authorization": f"token {github_token}",
         "Accept": "application/vnd.github.luke-cage-preview+json"
     }
 
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     repo_owner = os.getenv("REPO_OWNER")
     repo_name = os.getenv("REPO_NAME")
     branch = "main"
-    token = os.getenv("TOKEN_GITHUB")
+    github_token = os.getenv("TOKEN_GITHUB")
 
     # Load the configuration from the YAML file
     config = load_config("protection-branch.yaml")

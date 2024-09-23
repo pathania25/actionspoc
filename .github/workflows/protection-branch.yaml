@@ -28,6 +28,6 @@ jobs:
         run: |
           python ./scripts/set_branch_protection.py  # Assuming your Python script is in this path
         env:
-          token: ${{ secrets.TOKEN_GITHUB }}  # Set this secret in GitHub
+          github_token: ${{ secrets.TOKEN_GITHUB }}  # Set this secret in GitHub
           repo_owner: ${{ secrets.REPO_OWNER }}
           repo_name: ${{ secrets.REPO_NAME }}
