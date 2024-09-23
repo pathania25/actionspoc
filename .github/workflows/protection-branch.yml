@@ -6,6 +6,7 @@ on:
       - main
 
 jobs:
+
   apply-branch-protection:
     runs-on: ubuntu-latest
     steps:
