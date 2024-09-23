@@ -25,12 +25,12 @@ payload = {
     "enforce_admins": True,  # Enforce for admins
     "required_pull_request_reviews": {
         "dismissal_restrictions": {
-            "users": ["ravi_username", "manasa_username"],  # Replace with actual GitHub usernames
+            "users": ["ravicharan-nettyam", "pathania25"],  # Replace with actual GitHub usernames
             "teams": []  # Can add specific teams if needed
         },
         "dismiss_stale_reviews": False,
         "require_code_owner_reviews": True,
-        "required_approving_review_count": 2  # Require approvals from Ravi and Manasa
+        "required_approving_review_count": 2  # Require approvals from Ravi and Monika
     },
     "restrictions": {
         "users": [],
