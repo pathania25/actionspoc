@@ -99,7 +99,7 @@ if __name__ == "__main__":
     token = os.getenv("TOKEN_GITHUB")
 
     # Load the configuration from the YAML file
-    config = load_config("protection-branch.yaml")
+    config = load_config("protection-branch.yml")
 
     # Apply branch protection rules
     branch_protection_rules = config['branch_protection_rules'][0]
