@@ -10,8 +10,6 @@ branch_protection:
       - "Monika"
   enforce_admins: true
   restrict_pushes: true  # No direct pushes allowed to main
-deployments:
-  prod_deploy_branch: "main"  # Only deploy from main branch
 
 jobs:
   example-job:
@@ -40,4 +38,4 @@ jobs:
 
     - name: Run Python script using environment variables
       run: |
-        set_branch_protection.py
+        update_branch_protection.py
