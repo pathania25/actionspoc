@@ -17,6 +17,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install requests
+
     - name: Apply branch protection rules
       run: |
         python apply_branch_protection.py
@@ -25,14 +34,3 @@ jobs:
         REPO_OWNER: ${{ secrets.REPO_OWNER }}
         REPO_NAME: ${{ secrets.REPO_NAME }}
         DEPLOY_BRANCH: ${{ secrets.DEPLOY_BRANCH }}
-
-#  check_deploy_branch:
- #   name: Restrict Production Deployments
-  #  runs-on: ubuntu-latest
-   # if: github.ref != 'refs/heads/main'  # Ensure this job only runs if not on main branch
-
-    #steps:
-#    - name: Fail if not deploying from main
- #     run: |
-  #      echo "Deployments are only allowed from the main branch."
-   #     exit 1

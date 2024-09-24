@@ -25,12 +25,9 @@ payload = {
         "require_code_owner_reviews": True,  # Enforce CODEOWNERS review rules
         "required_approving_review_count": 1  # Require at least 1 approval
     },
-   #"restrictions": {
-   #     "users": ["Ravi", "Manasa"],  # Only allow Ravi and Manasa to push
-   #     "teams": []  # You can add GitHub teams if needed
-   #},
-    "allow_force_pushes": False,  # Disable force pushes
-    "allow_deletions": False      # Disable branch deletions
+   "restrictions": None,         # No user or team restrictions
+   "allow_force_pushes": False,  # Disable force pushes
+   "allow_deletions": False      # Disable branch deletions
 }
 
 # Apply branch protection rules using the GitHub API
