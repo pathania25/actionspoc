@@ -25,10 +25,10 @@ payload = {
         "require_code_owner_reviews": True,  # Enforce CODEOWNERS review rules
         "required_approving_review_count": 1  # Require at least 1 approval
     },
-    "restrictions": {
+   """ "restrictions": {
         "users": ["Ravi", "Manasa"],  # Only allow Ravi and Manasa to push
         "teams": []  # You can add GitHub teams if needed
-    },
+    }, """
     "allow_force_pushes": False,  # Disable force pushes
     "allow_deletions": False      # Disable branch deletions
 }
