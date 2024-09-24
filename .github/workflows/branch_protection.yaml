@@ -1,4 +1,11 @@
 # repo_settings.yaml
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 branch_protection:
   branch: "main"
   allow_force_pushes: false
