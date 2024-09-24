@@ -6,8 +6,6 @@ on:
   pull_request:
     branches:
       - main
-branch_protection:
-  branch: "main"
   allow_force_pushes: false
   allow_deletions: false
   require_pull_request_reviews:
