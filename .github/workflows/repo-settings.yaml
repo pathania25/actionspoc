@@ -1,0 +1,43 @@
+# repo_settings.yaml
+branch_protection:
+  branch: "main"
+  allow_force_pushes: false
+  allow_deletions: false
+  require_pull_request_reviews:
+    required_approving_review_count: 2
+    reviewers:
+      - "Ravi"
+      - "Monika"
+  enforce_admins: true
+  restrict_pushes: true  # No direct pushes allowed to main
+deployments:
+  prod_deploy_branch: "main"  # Only deploy from main branch
+
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+
+    env:
+      # Load GitHub Personal Access Token (PAT)
+      GITHUB_TOKEN = ${{ secrets.TOKEN_GITHUB }}
+      OWNER = ${{ secrets.REPO_OWNER }}
+      REPO = ${{ secrets.REPO_NAME }}
+      BRANCH = ${{ secrets.DEPLOY_BRANCH }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests pyyaml
+
+    - name: Run Python script using environment variables
+      run: |
+        set_branch_protection.py
