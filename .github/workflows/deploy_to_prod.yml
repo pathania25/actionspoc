@@ -1,0 +1,41 @@
+name: Deploy to Production
+
+# Trigger the workflow only when pushing to the `main` branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python (or another environment if needed)
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        # Install dependencies for your project if needed
+        pip install -r requirements.txt
+
+    - name: Run tests (optional)
+      run: |
+        # Run any tests before deploying to ensure everything is working
+        pytest
+
+    - name: Deploy to Production
+      if: github.ref == 'refs/heads/main'  # Only deploy if the branch is `main`
+      run: |
+        # Add your deployment commands here
+        echo "Deploying to production environment..."
+        # For example, deploy to AWS, GCP, or Azure
+        # aws deploy <params>
+        # gcloud app deploy
+        # az webapp up
