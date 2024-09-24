@@ -1,15 +1,19 @@
 import requests
-#import yaml
+import yaml
 import os
 
-# GitHub API URL
+# Load configuration from YAML
+def load_config(file_path):
+    with open(file_path, 'r') as file:
+        return yaml.safe_load(file)
+
 # Function to update branch protection rule
 def update_branch_protection(repo_owner, repo_name, branch, github_token, approvers):
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/branches/{branch}/protection"
 
 # Headers with authentication
 headers = {
-    "Authorization": f"token {github_token}",
+    "Authorization": f"token {token}",
     "Accept": "application/vnd.github.v3+json"
 }
 
@@ -51,7 +55,7 @@ def set_code_owner_reviews(repo_owner, repo_name, branch, github_token, approver
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/branches/{branch}/protection/required_pull_request_reviews"
     
     headers = {
-        "Authorization": f"token {github_token}",
+        "Authorization": f"token {token}",
         "Accept": "application/vnd.github.luke-cage-preview+json"
     }
 
@@ -72,7 +76,7 @@ def restrict_deployments(repo_owner, repo_name, branch, github_token):
     url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/environments/production"
     
     headers = {
-        "Authorization": f"token {github_token}",
+        "Authorization": f"token {token}",
         "Accept": "application/vnd.github.luke-cage-preview+json"
     }
 
@@ -103,10 +107,10 @@ if __name__ == "__main__":
 
     # Apply branch protection rules
     branch_protection_rules = config['branch_protection_rules'][0]
-    update_branch_protection(repo_owner, repo_name, branch, token, branch_protection_rules['required_approvers'])
+    update_branch_protection(repo_owner, repo_name, branch, github_token, branch_protection_rules['required_approvers'])
 
     # Set PR approvals to require reviews from Ravi and Manasa
-    set_code_owner_reviews(repo_owner, repo_name, branch, token, branch_protection_rules['required_approvers'])
+    set_code_owner_reviews(repo_owner, repo_name, branch, github_token, branch_protection_rules['required_approvers'])
 
     # Restrict deployments to the main branch
-    restrict_deployments(repo_owner, repo_name, branch, token)
+    restrict_deployments(repo_owner, repo_name, branch, github_token)
