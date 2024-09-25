@@ -7,8 +7,6 @@ REPO_OWNER = os.getenv("REPO_OWNER")  # Repository owner (user or org)
 REPO_NAME = os.getenv("REPO_NAME")  # Repository name
 BRANCH = "main"  # The branch to protect (e.g., main)
 
-APPROVERS = ["ravi", "monika"]
-
 # GitHub API URL for updating branch protection
 url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/branches/{BRANCH}/protection"
 
@@ -23,10 +21,9 @@ payload = {
         "require_code_owner_reviews": True,
         "required_approving_review_count": 2  # Require at least 2 approvals
     },
-    "restrictions": {
-        "users": APPROVERS,
-        "teams": []
-    }
+    "restrictions": None
+    "allow_force_pushes": False,
+    "allow_deletions": False
 }
 
 response = requests.put(url, headers=headers, json=payload)
