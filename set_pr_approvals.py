@@ -5,7 +5,7 @@ import requests
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # GitHub Personal Access Token
 REPO_OWNER = os.getenv("REPO_OWNER")  # Repository owner (user or org)
 REPO_NAME = os.getenv("REPO_NAME")  # Repository name
-BRANCH = "main"  # The branch to protect (e.g., main)
+BRANCH = os.getenv("DEPLOY_BRANCH")  # The branch to protect (e.g., main)
 
 # GitHub API URL for updating branch protection
 url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/branches/{BRANCH}/protection"
