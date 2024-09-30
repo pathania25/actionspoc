@@ -3,8 +3,8 @@ import requests
 
 # Load GitHub Token from environment variables (set securely in GitHub Actions)
 GITHUB_TOKEN = os.getenv("TOKEN_GITHUB")
-OWNER = os.getenv("REPO_OWNER")  # Replace with your GitHub username or organization
-REPO = os.getenv("REPO_NAME")   # Replace with your repository name
+REPO_OWNER = os.getenv("REPO_OWNER")  # Replace with your GitHub username or organization
+REPO_NAME = os.getenv("REPO_NAME")   # Replace with your repository name
 BRANCH = os.getenv("DEPLOY_BRANCH")  # Branch to apply protection to
 
 # GitHub API URL for updating branch protection
