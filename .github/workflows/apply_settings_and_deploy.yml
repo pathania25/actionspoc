@@ -27,6 +27,7 @@ jobs:
       - name: Apply branch protection
         run: python set_branch_protection.py
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}  # Use the default GitHub token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
+          BRANCH: ${{ env.DEPLOY_BRANCH }}
