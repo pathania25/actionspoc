@@ -11,7 +11,7 @@ BRANCH = os.getenv("DEPLOY_BRANCH")
 url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/branches/{BRANCH}/protection"
 
 headers = {
-    "Authorization": f"token {TOKEN_GITHUB}",
+    "Authorization": f"token {GITHUB_TOKEN}",
     "Accept": "application/vnd.github.luke-cage-preview+json"
 }
 
