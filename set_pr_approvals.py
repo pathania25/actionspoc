@@ -21,7 +21,10 @@ payload = {
         "require_code_owner_reviews": True,
         "required_approving_review_count": 2  # Require at least 2 approvals
     },
-    "restrictions": None
+    "restrictions": {
+        "users": [],  # No user restrictions, just CODEOWNERS
+        "teams": []   # No team restrictions
+    },
     "allow_force_pushes": False,
     "allow_deletions": False
 }
