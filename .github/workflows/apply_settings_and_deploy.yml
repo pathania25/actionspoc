@@ -8,6 +8,11 @@ on:
     branches:
       - main
 
+permissions:  # Set the permissions for the GITHUB_TOKEN
+  contents: write
+  pull-requests: write
+  administration: write  # Required to modify branch protection rules
+
 jobs:
   block_direct_pushes:
     runs-on: ubuntu-latest
