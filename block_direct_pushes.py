@@ -24,11 +24,9 @@ payload = {
     "required_status_checks": None,  # No status checks for now
     "enforce_admins": True,  # Enforce rules for admins
     "required_pull_request_reviews": {
-        "dismissal_restrictions": {},
         "require_code_owner_reviews": True,  # Require reviews from CODEOWNERS
         "required_approving_review_count": 2  # Require two approving reviews
     },
-    "restrictions": None,  # No restrictions on who can push
     "required_linear_history": True,
     "allow_force_pushes": False,
     "allow_deletions": False
