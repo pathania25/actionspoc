@@ -7,7 +7,7 @@ REPO_OWNER = os.getenv("REPO_OWNER")  # Replace with your GitHub username or org
 REPO_NAME = os.getenv("REPO_NAME")   # Replace with your repository name
 BRANCH = os.getenv("DEPLOY_BRANCH")  # Branch to apply protection to protect (e.g., 'main')
 
-if not github_token:
+if not GITHUB_TOKEN:
     raise ValueError("GITHUB_TOKEN environment variable is not set.")
 
 # GitHub API URL to set branch protection
