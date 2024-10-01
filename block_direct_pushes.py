@@ -19,10 +19,13 @@ payload = {
     "required_status_checks": None,  # No required status checks for now
     "enforce_admins": True,  # Enforce protection for admins
     "required_pull_request_reviews": {
-        "require_code_owner_reviews": True,
+        "require_code_owner_reviews": True,   # Enforce CODEOWNERS
         "required_approving_review_count": 2  # Require at least 2 reviews
     },
-    "restrictions": None,  # No additional restrictions
+    "restrictions": {
+        "users": [],  # No user restrictions, just CODEOWNERS
+        "teams": []   # No team restrictions
+    },
     "allow_force_pushes": False,
     "allow_deletions": False
 }
