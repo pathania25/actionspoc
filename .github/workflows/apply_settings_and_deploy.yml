@@ -32,7 +32,7 @@ jobs:
             } else {
               console.log(`This PR has ${approvedReviews.length} approval(s).`);
             }
-            
+
   block_direct_pushes:
     runs-on: ubuntu-latest
     steps:
@@ -73,6 +73,6 @@ jobs:
       - name: Set PR approvals from Ravi and Manasa
         run: python set_pr_approvals.py
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
