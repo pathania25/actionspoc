@@ -27,6 +27,7 @@ payload = {
         "require_code_owner_reviews": True,  # Require reviews from CODEOWNERS
         "required_approving_review_count": 2  # Require two approving reviews
     },
+    "restrictions": None,
     "required_linear_history": True,
     "allow_force_pushes": False,
     "allow_deletions": False
