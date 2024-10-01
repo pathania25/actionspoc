@@ -7,15 +7,15 @@ REPO_OWNER = os.getenv("REPO_OWNER")  # Repository owner (user or org)
 REPO_NAME = os.getenv("REPO_NAME")  # Repository name
 BRANCH = os.getenv("DEPLOY_BRANCH")  # The branch to protect (e.g., main)
 
-if not github_token:
+if not GITHUB_TOKEN:
     raise ValueError("GITHUB_TOKEN environment variable is not set.")
 
 # GitHub API URL to set branch protection
-url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/branches/{branch_name}/protection"
+url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/branches/{BRANCH}/protection"
 
 # Headers for authentication
 headers = {
-    "Authorization": f"token {github_token}",
+    "Authorization": f"token {GITHUB_TOKEN}",
     "Accept": "application/vnd.github.luke-cage-preview+json"
 }
 
@@ -38,6 +38,6 @@ payload = {
 response = requests.put(url, json=payload, headers=headers)
 
 if response.status_code == 200:
-    print(f"Branch protection successfully applied to {branch_name}")
+    print(f"Branch protection successfully applied to {BRANCH}")
 else:
     print(f"Failed to apply branch protection: {response.status_code} {response.text}")
