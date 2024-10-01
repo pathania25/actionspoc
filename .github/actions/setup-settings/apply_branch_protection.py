@@ -19,7 +19,7 @@ def apply_branch_protection():
         "required_status_checks": None,
         "enforce_admins": True,
         "required_pull_request_reviews": {
-            "required_approving_review_count": 2,
+            "required_approving_review_count": 1,
             "dismiss_stale_reviews": True
         },
         "restrictions": None  # No user restrictions
