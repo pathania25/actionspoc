@@ -5,14 +5,13 @@ on:
     branches:
       - main
   pull_request:
-    types: [opened, synchronize, reopened]
     branches:
       - main
 
-jobs:
-  env:
+env:
   BRANCH: main  # Define the branch variable globally as 'main'
 
+jobs:
   protect_branch:
     runs-on: ubuntu-latest
 
