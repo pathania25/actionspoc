@@ -7,13 +7,32 @@ on:
   pull_request:
     branches:
       - main
-
-permissions:  # Set the permissions for the GITHUB_TOKEN
-  contents: write
-  pull-requests: write
-  administration: write  # Required to modify branch protection rules
+    types: [opened, synchronize]  
 
 jobs:
+  check-approvals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Check PR for Approvals
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: reviews } = await github.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const approvedReviews = reviews.filter(review => review.state === 'APPROVED');
+            if (approvedReviews.length < 2) {
+              throw new Error('Not enough approvals for this PR.');
+            } else {
+              console.log(`This PR has ${approvedReviews.length} approval(s).`);
+            }
+            
   block_direct_pushes:
     runs-on: ubuntu-latest
     steps:

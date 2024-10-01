@@ -7,6 +7,9 @@ REPO_OWNER = os.getenv("REPO_OWNER")  # Replace with your GitHub username or org
 REPO_NAME = os.getenv("REPO_NAME")   # Replace with your repository name
 BRANCH = os.getenv("DEPLOY_BRANCH")  # Branch to apply protection to
 
+if not GITHUB_TOKEN:
+    raise ValueError("GITHUB_TOKEN environment variable is not set.")
+
 # GitHub API URL for updating branch protection
 url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/branches/{BRANCH}/protection"
 
@@ -23,6 +26,7 @@ payload = {
         "required_approving_review_count": 2  # Require at least 2 reviews
     },
     "restrictions": None,
+    "required_linear_history": True,
     "allow_force_pushes": False,
     "allow_deletions": False
 }
