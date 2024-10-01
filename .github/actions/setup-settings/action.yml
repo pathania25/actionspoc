@@ -1,0 +1,23 @@
+name: "Setup GitHub Settings"
+description: "Sets up CODEOWNERS and applies branch protection rules."
+runs:
+  using: "composite"
+  steps:
+    - name: Create CODEOWNERS File
+      run: |
+        echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > .github/CODEOWNERS
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .github/CODEOWNERS
+        git commit -m "Add CODEOWNERS file"
+        git push origin main
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+
+    - name: Apply Branch Protection
+      run: python apply_branch_protection.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        REPO_OWNER: ${{ github.repository_owner }}
+        REPO_NAME: ${{ github.event.repository.name }}
+        BRANCH_NAME: "main"  # Default branch
