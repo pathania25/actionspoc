@@ -1,0 +1,18 @@
+name: Update GitHub Settings
+
+on:
+  push:
+    branches:
+      - main  # Trigger on pushes to the main branch
+
+jobs:
+  update-settings:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Update GitHub Settings
+        uses: ./.github/actions/update-settings
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}

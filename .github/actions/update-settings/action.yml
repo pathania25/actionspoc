@@ -1,0 +1,9 @@
+name: "Update GitHub Settings"
+description: "Composite action to update GitHub repository settings"
+runs:
+  using: "python"
+  steps:
+    - name: Update Branch Protection
+      run: python update_settings.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
