@@ -30,4 +30,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: ${{ github.event.repository.name }}
-          BRANCH: ${{ env.DEPLOY_BRANCH }}
+          BRANCH: ${{ github.DEPLOY_BRANCH }}
