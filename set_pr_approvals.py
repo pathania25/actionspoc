@@ -1,37 +1,43 @@
-import os
 import requests
+import os
 
-# Load environment variables (replace with your own tokens, repo, and branch)
+# Fetch environment variables for authentication and repository details
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # GitHub Personal Access Token
 REPO_OWNER = os.getenv("REPO_OWNER")  # Repository owner (user or org)
 REPO_NAME = os.getenv("REPO_NAME")  # Repository name
 BRANCH = os.getenv("DEPLOY_BRANCH")  # The branch to protect (e.g., main)
 
-# GitHub API URL for updating branch protection
-url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/branches/{BRANCH}/protection"
+if not github_token:
+    raise ValueError("GITHUB_TOKEN environment variable is not set.")
 
+# GitHub API URL to set branch protection
+url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/branches/{branch_name}/protection"
+
+# Headers for authentication
 headers = {
-    "Authorization": f"token {GITHUB_TOKEN}",
+    "Authorization": f"token {github_token}",
     "Accept": "application/vnd.github.luke-cage-preview+json"
 }
 
+# Branch protection settings payload
 payload = {
+    "required_status_checks": None,  # No status checks for now
+    "enforce_admins": True,  # Enforce rules for admins
     "required_pull_request_reviews": {
-        "dismiss_stale_reviews": True,
-        "require_code_owner_reviews": True,
-        "required_approving_review_count": 2  # Require at least 2 approvals
+        "dismissal_restrictions": {},
+        "require_code_owner_reviews": True,  # Require reviews from CODEOWNERS
+        "required_approving_review_count": 2  # Require two approving reviews
     },
-    "restrictions": {
-        "users": [],  # No user restrictions, just CODEOWNERS
-        "teams": []   # No team restrictions
-    },
+    "restrictions": None,  # No restrictions on who can push
+    "required_linear_history": True,
     "allow_force_pushes": False,
     "allow_deletions": False
 }
 
-response = requests.put(url, headers=headers, json=payload)
+# Send the PUT request to GitHub API to set the branch protection rules
+response = requests.put(url, json=payload, headers=headers)
 
 if response.status_code == 200:
-    print(f"PR approvals set for '{BRANCH}' branch!")
+    print(f"Branch protection successfully applied to {branch_name}")
 else:
-    print(f"Failed to set PR approvals: {response.status_code} - {response.text}")
+    print(f"Failed to apply branch protection: {response.status_code} {response.text}")
