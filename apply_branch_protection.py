@@ -7,14 +7,6 @@ REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 BRANCH = os.getenv("BRANCH", "main")
 REVIEWERS = os.getenv("REVIEWERS").split(',')
 
-if not GITHUB_TOKEN:
-    print("Error: GITHUB_TOKEN is missing!")
-else:
-    headers = {
-        "Authorization": f"token {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github.luke-cage-preview+json"
-    }
-    
 # Define the API URL for branch protection
 url = f"https://api.github.com/repos/{REPOSITORY}/branches/{BRANCH}/protection"
 
@@ -35,11 +27,15 @@ payload = {
     "allow_deletions": False
 }
 
-# Set up headers for the GitHub API request
-headers = {
-    "Authorization": f"token {GITHUB_TOKEN}",
-    "Accept": "application/vnd.github.luke-cage-preview+json"
-}
+# Check if GITHUB_TOKEN exists
+if not GITHUB_TOKEN:
+    print("Error: GITHUB_TOKEN is missing!")
+else:
+    # Set headers with the token for authentication
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.luke-cage-preview+json"
+    }
 
 # Apply branch protection rules
 response = requests.put(url, headers=headers, json=payload)
