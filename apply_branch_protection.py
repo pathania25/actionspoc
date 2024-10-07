@@ -2,7 +2,7 @@ import requests
 import os
 
 # Get environment variables
-GITHUB_TOKEN = os.getenv("TOKEN_GITHUB")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 REPOSITORY = os.getenv("GITHUB_REPOSITORY")
 BRANCH = os.getenv("BRANCH", "main")
 REVIEWERS = os.getenv("REVIEWERS").split(',')

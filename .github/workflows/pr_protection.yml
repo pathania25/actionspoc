@@ -18,7 +18,7 @@ jobs:
 
     - name: Apply Branch Protection Rules
       env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         GITHUB_REPOSITORY: ${{ github.repository }}
         BRANCH: main
         REVIEWERS: "pathania25, ravicharan-nettyam, manasa-telus"
