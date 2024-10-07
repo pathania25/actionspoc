@@ -3,8 +3,8 @@ import os
 
 # Get environment variables
 GITHUB_TOKEN = os.getenv("TOKEN_GITHUB")
-REPOSITORY = "pathania25/actionspoc"
-BRANCH = "main"
+REPOSITORY = os.getenv("GITHUB_REPOSITORY")
+BRANCH = os.getenv("BRANCH", "main")
 REVIEWERS = os.getenv("REVIEWERS").split(',')
 
 # Define the API URL for branch protection
