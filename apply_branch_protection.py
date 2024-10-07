@@ -30,14 +30,15 @@ payload = {
 # Check if GITHUB_TOKEN exists
 if not GITHUB_TOKEN:
     print("Error: GITHUB_TOKEN is missing!")
-else:
-    # Set headers with the token for authentication
-    headers = {
-        "Authorization": f"token {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github.luke-cage-preview+json"
-    }
+    exit(1)  # Exit the script with a non-zero status code to indicate failure
 
-# Apply branch protection rules
+# Set headers with the token for authentication
+headers = {
+    "Authorization": f"token {GITHUB_TOKEN}",
+    "Accept": "application/vnd.github.luke-cage-preview+json"
+}
+
+# Send the request to update branch protection
 response = requests.put(url, headers=headers, json=payload)
 
 if response.status_code == 200:
