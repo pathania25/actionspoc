@@ -1,0 +1,31 @@
+name: Branch Protection and PR Approval
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  apply_protection_rules:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Apply Branch Protection Rules
+      run: |
+        python3 apply_branch_protection.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        BRANCH: main
+        REVIEWERS: "pathania25, ravicharan-nettyam, manasa-telus"
+      
+  restrict_prod_deployment:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check if it's a production deploy
+      run: echo "Production deployment is restricted to the main branch."
