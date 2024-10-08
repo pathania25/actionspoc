@@ -28,7 +28,7 @@ jobs:
           else
             echo "Creating CODEOWNERS file."
           fi
-          echo '*    @RaviUsername @ManasaUsername' > CODEOWNERS
+          echo '* @pathania25 @ravicharan-nettyam @manasa-telus' > CODEOWNERS
           
           # Configure Git
           git config --global user.name "GitHub Action"
