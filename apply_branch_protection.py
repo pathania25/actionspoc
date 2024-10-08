@@ -12,7 +12,7 @@ url = f"https://api.github.com/repos/{REPOSITORY}/branches/{BRANCH}/protection"
 
 # Define branch protection rules payload
 payload = {
-    "required_status_checks": null,
+    "required_status_checks": None,
     "enforce_admins": True,
     "required_pull_request_reviews": {
         "dismiss_stale_reviews": True,
