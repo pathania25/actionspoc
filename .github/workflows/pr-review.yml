@@ -1,0 +1,19 @@
+name: PR Review Workflow
+
+on:
+  pull_request:
+    branches:
+      - '*'  # Triggers on any branch for a pull request
+
+jobs:
+  assign-reviewers:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Ensure PR has required code owners
+        run: |
+          echo "PR created, code owners will be assigned as per the CODEOWNERS file."
+          # This step doesn't actually need any specific commands since GitHub auto-assigns reviewers from CODEOWNERS.
