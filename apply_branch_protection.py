@@ -19,7 +19,7 @@ payload = {
             "require_code_owner_reviews": True,
             "required_approving_review_count": 2
         },
-        "restrictions": None,  # Could specify branch restrictions here
+        "restrictions": None,  # Specify branch restrictions here if required
         "allow_force_pushes": False,
         "allow_deletions": False
     }
