@@ -12,17 +12,20 @@ url = f"https://api.github.com/repos/{REPOSITORY}/branches/{BRANCH}/protection"
 
 # Define branch protection rules payload
 payload = {
-    "required_status_checks": None,
-    "enforce_admins": True,
-    "required_pull_request_reviews": {
-        "dismiss_stale_reviews": True,
-        "require_code_owner_reviews": True,
-        "required_approving_review_count": 1
-    },
-    "restrictions": None,  # No restrictions on who can push
-    "allow_force_pushes": False,
-    "allow_deletions": False
-}
+        "required_status_checks": {
+            "strict": True,
+            "contexts": []  # Add any required status checks here
+        },
+        "enforce_admins": True,
+        "required_pull_request_reviews": {
+            "dismiss_stale_reviews": True,
+            "require_code_owner_reviews": True,
+            "required_approving_review_count": 2
+        },
+        "restrictions": None,  # Could specify branch restrictions here
+        "allow_force_pushes": False,
+        "allow_deletions": False
+    }
 
 # Check if GITHUB_TOKEN exists
 if not GITHUB_TOKEN:
@@ -38,11 +41,10 @@ headers = {
 # Send the request to update branch protection
 response = requests.put(url, headers=headers, json=payload)
 
-if response.status_code == 200:
-    print(f"Branch protection rules successfully applied to {BRANCH} branch.")
-else:
-    print(f"Failed to apply branch protection rules: {response.status_code}")
-    print(response.json())
+ if response.status_code == 200:
+        print(f"Branch protection rules updated for {branch} branch")
+    else:
+        print(f"Error: {response.status_code} - {response.text}")
 
 # Add code owners as reviewers to the PR
 pr_number = os.getenv("GITHUB_PR_NUMBER")
