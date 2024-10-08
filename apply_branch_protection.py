@@ -15,7 +15,7 @@ payload = {
         "required_status_checks": None,
         "enforce_admins": True,
         "required_pull_request_reviews": {
-            "dismiss_stale_reviews": True,
+            "dismiss_stale_reviews": False,
             "require_code_owner_reviews": True,
             "required_approving_review_count": 2
         },
