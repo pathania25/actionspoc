@@ -1,0 +1,75 @@
+name: Setup Repository Settings
+
+on:
+  pull_request:
+    branches:
+      - '*'  # Trigger on PRs to any branch
+
+  push:
+    branches:
+      - main  # This workflow runs on pushes to the main branch
+
+jobs:
+  update-settings:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'  # Only run this job for pull requests
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up GitHub CLI
+        uses: cli/cli-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Personal access token stored as a secret
+
+      - name: Update CODEOWNERS
+        run: |
+          # Check if CODEOWNERS exists
+          if [ -f CODEOWNERS ]; then
+            echo "Updating existing CODEOWNERS file."
+            echo '* @pathania25 @ravicharan-nettyam @manasa-telus' > CODEOWNERS
+          else
+            echo "Creating CODEOWNERS file."
+          echo '* @pathania25 @ravicharan-nettyam @manasa-telus' > CODEOWNERS
+          fi
+          
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+
+  set-branch-protection:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'  # Only run this job for pushes
+    
+    steps:
+      - name: Set Branch Protection Rules
+        run: |
+          BRANCH_NAME="main"
+          curl -X PUT \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/branches/$BRANCH_NAME/protection" \
+            -d '{
+              "required_status_checks": {
+                "strict": true,
+                "contexts": []
+              },
+              "enforce_admins": true,
+              "required_pull_request_reviews": {
+                "required_approving_review_count": 2,
+                "dismiss_stale_reviews": true,
+                "dismissal_restrictions": {
+                  "users": ["@pathania25", "@ravicharan-nettyam", "@manasa-telus"]
+                }
+              },
+              "restrictions": null
+            }'
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'  # Only run this job for pushes to main
+
+    steps:
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production..."
