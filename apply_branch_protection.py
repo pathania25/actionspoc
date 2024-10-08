@@ -26,7 +26,7 @@ payload = {
         "allow_force_pushes": False,
         "allow_deletions": False
     }
-
+    
 # Check if GITHUB_TOKEN exists
 if not GITHUB_TOKEN:
     print("Error: GITHUB_TOKEN is missing!")
@@ -41,10 +41,13 @@ headers = {
 # Send the request to update branch protection
 response = requests.put(url, headers=headers, json=payload)
 
- if response.status_code == 200:
-        print(f"Branch protection rules updated for {branch} branch")
-    else:
-        print(f"Error: {response.status_code} - {response.text}")
+if response.status_code == 200:
+    print(f"Branch protection rules updated for {branch} branch")
+elif response.status_code == 403:
+    print(f"Failed to apply branch protection rules: {response.status_code} - {response.json()}")
+    print("Check your token permissions and ensure you have admin access.")
+else:
+    print(f"Error: {response.status_code} - {response.text}")
 
 # Add code owners as reviewers to the PR
 pr_number = os.getenv("GITHUB_PR_NUMBER")
