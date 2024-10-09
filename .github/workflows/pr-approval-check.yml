@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   check-approvals:
     runs-on: ubuntu-latest
@@ -27,18 +31,18 @@ jobs:
               pull_number: prNumber,
             });
 
-            // Specify the required approvers
+            // Specify the required approvers (without @)
             const requiredApprovers = ['pathania25', 'ravicharan-nettyam', 'manasa-telus'];
 
             // Check for approved reviews from the specified users
             const approvedReviews = reviews.data.filter(review => review.state === 'APPROVED');
             const approverLogins = approvedReviews.map(review => review.user.login);
-            const approvers = requiredApprovers.filter(approver => approverLogins.includes(approver));
 
             console.log(`PR #${prNumber} has approvals from: ${approverLogins.join(', ')}`);
             console.log(`Required approvals from: ${requiredApprovers.join(', ')}`);
 
             // Require at least one approval from the specified users
+            const approvers = requiredApprovers.filter(approver => approverLogins.includes(approver));
             if (approvers.length === 0) {
               throw new Error(`This PR needs at least one approval from the required approvers: ${requiredApprovers.join(', ')}`);
             }
