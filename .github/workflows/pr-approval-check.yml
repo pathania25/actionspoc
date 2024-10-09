@@ -1,49 +1,21 @@
-name: Require PR Approval
+name: Check PR Approval
 
 on:
   pull_request:
-    types: [opened, reopened, edited, synchronize]
-
-permissions:
-  contents: read
-  pull-requests: read
+    types: [opened, synchronize, reopened]
 
 jobs:
-  check-approvals:
+  check-approvers:
     runs-on: ubuntu-latest
-
     steps:
-      # Step to checkout the repository code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step to check PR approvals from specific users
-      - name: Check PR Approvals
-        uses: actions/github-script@v5
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-
-            // Fetch the reviews for the pull request
-            const reviews = await github.rest.pulls.listReviews({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: prNumber,
-            });
-
-            // Specify the required approvers (without @)
-            const requiredApprovers = ['pathania25', 'ravicharan-nettyam', 'manasa-telus'];
-
-            // Check for approved reviews from the specified users
-            const approvedReviews = reviews.data.filter(review => review.state === 'APPROVED');
-            const approverLogins = approvedReviews.map(review => review.user.login);
-
-            console.log(`PR #${prNumber} has approvals from: ${approverLogins.join(', ')}`);
-            console.log(`Required approvals from: ${requiredApprovers.join(', ')}`);
-
-            // Require at least one approval from the specified users
-            const approvers = requiredApprovers.filter(approver => approverLogins.includes(approver));
-            if (approvers.length === 0) {
-              throw new Error(`This PR needs at least one approval from the required approvers: ${requiredApprovers.join(', ')}`);
-            }
-            console.log('Required approver check passed.');
+      - name: Check if Ravi and Manasa approved the PR
+        run: |
+          APPROVERS=$(gh pr view ${{ github.event.pull_request.number }} --json reviews --jq '.reviews[].author.login')
+          if [[ $APPROVERS == *"ravi"* ]] && [[ $APPROVERS == *"manasa"* ]]; then
+            echo "Both Ravi and Manasa have approved the PR."
+          else
+            echo "PR requires approval from Ravi and Manasa."
+            exit 1
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
