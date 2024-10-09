@@ -18,14 +18,14 @@ jobs:
             const prNumber = context.payload.pull_request.number;
 
             // Fetch the reviews for the pull request
-            const reviews = await github.pulls.listReviews({
+            const reviews = await github.rest.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
             });
 
             // Fetch the CODEOWNERS file content
-            const codeownersContent = await github.repos.getContent({
+            const codeownersContent = await github.rest.repos.getContent({
               owner: context.repo.owner,
               repo: context.repo.repo,
               path: '.github/CODEOWNERS',
