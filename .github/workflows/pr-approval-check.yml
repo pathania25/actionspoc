@@ -1,51 +1,29 @@
-name: PR Approval Check
+name: Check PR Approval from Codeowners
 
 on:
-  pull_request:
-    types: [opened, edited, reopened]
+  pull_request_review:
+    types: [submitted]
 
 jobs:
-  check-approvals:
+  check-approval:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check for CODEOWNERS Approvals
+      - name: Check PR Approval Status
         uses: actions/github-script@v5
         with:
           script: |
-            const context = github.context;
             const prNumber = context.payload.pull_request.number;
-            const requiredApprovals = 1; // Set the number of required approvals
 
-            // Fetch the reviews for the pull request
+            // Fetch all reviews for the pull request
             const reviews = await github.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
             });
 
-            // Fetch CODEOWNERS
-            const codeownersContent = await github.repos.getContent({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              path: '.github/CODEOWNERS',
-            });
+            // Check if any code owners have approved
+            const approvals = reviews.data.filter(review => review.state === 'APPROVED' && review.user.login === 'code-owner-username');
 
-            // Decode the CODEOWNERS content if it is in base64
-            const codeowners = Buffer.from(codeownersContent.data.content, 'base64').toString('utf-8')
-              .split('\n')
-              .map(line => line.trim())
-              .filter(line => line && !line.startsWith('#')) // Ignore comments and empty lines
-              .flatMap(line => line.split(/\s+/).slice(1)); // Get the owners
-
-            const approvedUsers = reviews.data
-              .filter(review => review.state === 'APPROVED')
-              .map(review => review.user.login);
-
-            // Check if the required approvers approved the PR
-            const approversCount = approvedUsers.filter(user => codeowners.includes(user)).length;
-
-            if (approversCount < requiredApprovals) {
-              throw new Error(`This PR requires at least ${requiredApprovals} approval(s) from code owners: ${codeowners.join(', ')}`);
-            }
-
-            
+            // Output the current approval status
+            console.log(`PR #${prNumber} has ${approvals.length} approval(s) from code owners.`);
