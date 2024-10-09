@@ -1,0 +1,46 @@
+name: PR Approval Check
+
+on:
+  pull_request:
+    types: [opened, edited, reopened]
+
+jobs:
+  check-approvals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for CODEOWNERS Approvals
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const requiredApprovals = 1; // Set the number of required approvals
+
+            // Fetch the reviews for the pull request
+            const reviews = await github.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+            });
+
+            // Fetch CODEOWNERS
+            const codeowners = await github.repos.getContent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: '.github/CODEOWNERS'
+            });
+
+            const approvedUsers = reviews.data
+              .filter(review => review.state === 'APPROVED')
+              .map(review => review.user.login);
+
+            const requiredApprovers = codeowners.data
+              .map(line => line.split(/\s+/).slice(1)) // Ignore the paths
+              .flat()
+              .filter(Boolean); // Flatten the list and remove empty entries
+
+            // Check if the required approvers approved the PR
+            const approversCount = approvedUsers.filter(user => requiredApprovers.includes(user)).length;
+
+            if (approversCount < requiredApprovals) {
+              throw new Error(`This PR requires at least ${requiredApprovals} approval(s) from code owners: ${requiredApprovers.join(', ')}`);
+            }
