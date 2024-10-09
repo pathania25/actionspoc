@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Update Branch Protection Rules
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Your PAT secret
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Your PAT secret
         run: |
           echo "Updating branch protection rules for the main branch..."
 
