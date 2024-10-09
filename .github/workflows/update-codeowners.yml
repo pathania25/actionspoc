@@ -32,5 +32,5 @@ jobs:
 
           # Add, commit, and push changes
           git add .github/CODEOWNERS
-          git commit -m "Add/Update CODEOWNERS for Ravi and Manasa" || echo "No changes to commit"
-          git push origin ${{ github.head_ref }}
+          git commit -m "Add/Update CODEOWNERS for Monika Ravi and Manasa" || echo "No changes to commit"
+          git push origin HEAD:${{ github.head_ref }}
