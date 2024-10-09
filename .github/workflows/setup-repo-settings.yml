@@ -64,12 +64,17 @@ jobs:
           
           # Fetch and merge the latest changes
           git fetch origin main
-          git merge origin/main --no-edit || true  # Ignore merge conflicts for now
-          
+          git merge origin/main --allow-unrelated-histories --no-edit || true  
+
           # Add changes and commit
           git add CODEOWNERS
-          git commit -m "Update CODEOWNERS to include Ravi and Manasa" || echo "No changes to commit"
-          git push origin HEAD:main  # Push changes to the main branch
+          git commit -m "Update CODEOWNERS to include Monika, Ravi and Manasa" || echo "No changes to commit"
+          
+          # Pull the latest changes to avoid non-fast-forward errors
+          git pull --rebase origin main
+
+          # Push changes to the main branch
+          git push origin HEAD:main || echo "Push failed, please check for conflicts"
 
   deploy:
     runs-on: ubuntu-latest
