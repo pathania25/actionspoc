@@ -1,0 +1,36 @@
+name: Update CODEOWNERS
+
+on:
+  pull_request:
+    branches:
+      - '*'  # Run on any branch
+
+jobs:
+  update-codeowners:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create or Update CODEOWNERS
+        run: |
+          # Check if CODEOWNERS file exists, create or update it
+          if [ ! -f CODEOWNERS ]; then
+            echo "Creating CODEOWNERS file."
+            echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > CODEOWNERS
+          else
+            echo "CODEOWNERS file exists. Updating it."
+            echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > CODEOWNERS
+          fi
+
+          # Configure Git user for commit
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+
+          # Add CODEOWNERS file and commit the changes
+          git add CODEOWNERS
+          git commit -m "Add/Update CODEOWNERS for PR reviewers" || echo "No changes to commit"
+
+          # Push the updated CODEOWNERS file back to the branch
+          git push origin HEAD:${{ github.head_ref }}
