@@ -1,36 +1,36 @@
-name: Update CODEOWNERS
+name: Setup PR Approvers (Ravi and Manasa)
 
 on:
   pull_request:
     branches:
-      - '*'  # Run on any branch
+      - '*'  # Trigger on any branch
 
 jobs:
-  update-codeowners:
+  setup-codeowners:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Create or Update CODEOWNERS
         run: |
-          # Check if CODEOWNERS file exists, create or update it
-          if [ ! -f CODEOWNERS ]; then
-            echo "Creating CODEOWNERS file."
-            echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > CODEOWNERS
+          # Check if the CODEOWNERS file already exists
+          if [ ! -f .github/CODEOWNERS ]; then
+            echo "CODEOWNERS file does not exist. Creating one..."
+            echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > .github/CODEOWNERS
           else
-            echo "CODEOWNERS file exists. Updating it."
-            echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > CODEOWNERS
+            echo "Updating existing CODEOWNERS file."
+            echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > .github/CODEOWNERS
           fi
 
-          # Configure Git user for commit
+      - name: Commit and Push Changes
+        run: |
+          # Configure Git
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
-          # Add CODEOWNERS file and commit the changes
-          git add CODEOWNERS
-          git commit -m "Add/Update CODEOWNERS for PR reviewers" || echo "No changes to commit"
-
-          # Push the updated CODEOWNERS file back to the branch
-          git push origin HEAD:${{ github.head_ref }}
+          # Add, commit, and push changes
+          git add .github/CODEOWNERS
+          git commit -m "Add/Update CODEOWNERS for Ravi and Manasa" || echo "No changes to commit"
+          git push origin ${{ github.head_ref }}
