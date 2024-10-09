@@ -1,11 +1,11 @@
-name: Check PR Approval from Code Owners
+name: Require PR Approval
 
 on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
 
 jobs:
-  check-codeowners-approval:
+  check-approvals:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step to check PR approvals from CODEOWNERS
-      - name: Check PR Code Owners Approval
+      # Step to check PR approvals from specific users
+      - name: Check PR Approvals
         uses: actions/github-script@v5
         with:
           script: |
@@ -27,22 +27,19 @@ jobs:
               pull_number: prNumber,
             });
 
-            // Fetch the CODEOWNERS file content
-            const codeownersContent = await github.rest.repos.getContent({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              path: '.github/CODEOWNERS',
-            });
+            // Specify the required approvers
+            const requiredApprovers = ['@pathania25', '@ravicharan-nettyam', '@manasa-telus'];
 
-            // Check for approved reviews by code owners
+            // Check for approved reviews from the specified users
             const approvedReviews = reviews.data.filter(review => review.state === 'APPROVED');
-            const codeOwnerApprovals = approvedReviews.filter(review => codeowners.includes(review.user.login));
+            const approverLogins = approvedReviews.map(review => review.user.login);
+            const approvers = requiredApprovers.filter(approver => approverLogins.includes(approver));
 
-            console.log(`PR #${prNumber} has ${codeOwnerApprovals.length} approval(s) from code owners.`);
-            console.log(`Required approvals from code owners: ${codeowners.join(', ')}`);
+            console.log(`PR #${prNumber} has approvals from: ${approverLogins.join(', ')}`);
+            console.log(`Required approvals from: ${requiredApprovers.join(', ')}`);
 
-            // Require at least one approval from code owners
-            if (codeOwnerApprovals.length === 0) {
-              throw new Error(`This PR needs at least one approval from a code owner: ${codeowners.join(', ')}`);
+            // Require at least one approval from the specified users
+            if (approvers.length === 0) {
+              throw new Error(`This PR needs at least one approval from the required approvers: ${requiredApprovers.join(', ')}`);
             }
-            console.log('Code owner approval check passed.');
+            console.log('Required approver check passed.');
