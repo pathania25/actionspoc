@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step to check PR approvals
-      - name: Check PR Codeowners Approval
+      # Step to check PR approvals from CODEOWNERS
+      - name: Check PR Code Owners Approval
         uses: actions/github-script@v5
         with:
           script: |
