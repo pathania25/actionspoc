@@ -1,29 +1,51 @@
-name: Check PR Approval from Codeowners
+name: PR Approval Check for Codeowners
 
 on:
+  pull_request:
+    types: [opened, reopened, edited]
   pull_request_review:
     types: [submitted]
 
 jobs:
-  check-approval:
+  check-codeowners-approval:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check PR Approval Status
+      - name: Check PR Codeowners Approval
         uses: actions/github-script@v5
         with:
           script: |
             const prNumber = context.payload.pull_request.number;
 
-            // Fetch all reviews for the pull request
+            // Fetch the reviews for the pull request
             const reviews = await github.pulls.listReviews({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: prNumber,
             });
 
-            // Check if any code owners have approved
-            const approvals = reviews.data.filter(review => review.state === 'APPROVED' && review.user.login === 'code-owner-username');
+            // Fetch the CODEOWNERS file content
+            const codeownersContent = await github.repos.getContent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: '.github/CODEOWNERS',
+            });
 
-            // Output the current approval status
-            console.log(`PR #${prNumber} has ${approvals.length} approval(s) from code owners.`);
+            // Decode the CODEOWNERS file if it's base64-encoded
+            const codeowners = Buffer.from(codeownersContent.data.content, 'base64').toString('utf-8')
+              .split('\n')
+              .filter(line => line.trim() && !line.startsWith('#')) // Ignore empty lines and comments
+              .flatMap(line => line.split(/\s+/).slice(1)); // Extract the code owner usernames
+
+            // Check for approved reviews by code owners
+            const approvedReviews = reviews.data.filter(review => review.state === 'APPROVED');
+            const codeOwnerApprovals = approvedReviews.filter(review => codeowners.includes(review.user.login));
+
+            console.log(`PR #${prNumber} has ${codeOwnerApprovals.length} approval(s) from code owners.`);
+            console.log(`Required approvals from code owners: ${codeowners.join(', ')}`);
+
+            // Require at least one approval from code owners
+            if (codeOwnerApprovals.length === 0) {
+              throw new Error(`This PR needs at least one approval from a code owner: ${codeowners.join(', ')}`);
+            }
+            console.log('Code owner approval check passed.');
