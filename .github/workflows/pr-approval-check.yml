@@ -34,12 +34,6 @@ jobs:
               path: '.github/CODEOWNERS',
             });
 
-            // Decode the CODEOWNERS file if it's base64-encoded
-            const codeowners = Buffer.from(codeownersContent.data.content, 'base64').toString('utf-8')
-              .split('\n')
-              .filter(line => line.trim() && !line.startsWith('#')) // Ignore empty lines and comments
-              .flatMap(line => line.split(/\s+/).slice(1)); // Extract the code owner usernames
-
             // Check for approved reviews by code owners
             const approvedReviews = reviews.data.filter(review => review.state === 'APPROVED');
             const codeOwnerApprovals = approvedReviews.filter(review => codeowners.includes(review.user.login));
