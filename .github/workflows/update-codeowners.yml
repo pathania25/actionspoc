@@ -12,10 +12,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}  # Ensure we are on the correct PR branch
 
       - name: Create or Update CODEOWNERS
         run: |
-          # Check if the CODEOWNERS file already exists
+          # Create the .github directory if it doesn't exist
+          mkdir -p .github
+          
+          # Check if the CODEOWNERS file exists and create/update it
           if [ ! -f .github/CODEOWNERS ]; then
             echo "CODEOWNERS file does not exist. Creating one..."
             echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > .github/CODEOWNERS
@@ -24,13 +29,22 @@ jobs:
             echo "* @pathania25 @ravicharan-nettyam @manasa-telus" > .github/CODEOWNERS
           fi
 
-      - name: Commit and Push Changes
+      - name: Commit Changes
         run: |
           # Configure Git
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
-          # Add, commit, and push changes
+          # Add changes
           git add .github/CODEOWNERS
-          git commit -m "Add/Update CODEOWNERS for Monika Ravi and Manasa" || echo "No changes to commit"
+          git commit -m "Add/Update CODEOWNERS for Ravi and Manasa" || echo "No changes to commit"
+
+      - name: Pull Remote Changes
+        run: |
+          # Pull latest changes from the remote branch to avoid push rejection
+          git pull origin ${{ github.head_ref }} || echo "No changes to pull"
+
+      - name: Push Changes
+        run: |
+          # Push changes to the pull request branch
           git push origin HEAD:${{ github.head_ref }}
