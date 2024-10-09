@@ -28,7 +28,7 @@ jobs:
             });
 
             // Specify the required approvers
-            const requiredApprovers = ['@pathania25', '@ravicharan-nettyam', '@manasa-telus'];
+            const requiredApprovers = ['pathania25', 'ravicharan-nettyam', 'manasa-telus'];
 
             // Check for approved reviews from the specified users
             const approvedReviews = reviews.data.filter(review => review.state === 'APPROVED');
