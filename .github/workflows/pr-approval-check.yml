@@ -12,7 +12,6 @@ jobs:
         uses: actions/github-script@v5
         with:
           script: |
-            const github = require('@actions/github');
             const context = github.context;
             const prNumber = context.payload.pull_request.number;
             const requiredApprovals = 1; // Set the number of required approvals

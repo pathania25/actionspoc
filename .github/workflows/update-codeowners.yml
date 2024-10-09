@@ -1,4 +1,4 @@
-name: Setup PR Approvers (Ravi and Manasa)
+name: Setup PR Approvers
 
 on:
   pull_request:
