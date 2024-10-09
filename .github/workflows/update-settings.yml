@@ -48,7 +48,7 @@ jobs:
             https://api.github.com/repos/${{ github.repository }}/branches/main/protection/required_pull_request_reviews \
             -d '{
               "users": ["pathania25", "ravicharan-nettyam", "manasa-telus"],
-              "required_approving_review_count": 2
+              "required_approving_review_count": 1
             }'
 
           echo "Reviewers set successfully."
