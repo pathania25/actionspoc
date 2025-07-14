@@ -9,19 +9,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install gcloud SDK
-        run: |
-          curl -sSL https://sdk.cloud.google.com | bash
-          source "$HOME/google-cloud-sdk/path.bash.inc"
-          gcloud version
-
-      - name: Add gcloud to PATH
-        run: |
-          export CLOUD_SDK_HOME=$HOME/google-cloud-sdk
-          source "$CLOUD_SDK_HOME/path.bash.inc"
-          gcloud version    
-
-
       - name: Authenticate with GKE
         run: |
           gcloud container clusters get-credentials lab-datahub2-01-ne1-warpstream-clstr \
