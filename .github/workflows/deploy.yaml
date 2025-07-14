@@ -32,7 +32,8 @@ jobs:
           export USE_GKE_GCLOUD_AUTH_PLUGIN=True
           gcloud container clusters get-credentials lab-datahub2-01-ne1-warpstream-clstr \
             --region northamerica-northeast1 \
-            --project ti-ds-tii-01
+            --project ti-ds-tii-01 \
+            --internal-ip
 
       - name: Get pod details
         run: kubectl get pods -n warpstream
