@@ -9,8 +9,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Add gcloud to PATH
-        run: echo "/usr/bin" >> $GITHUB_PATH
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+
 
       - name: Authenticate with GKE
         run: |
