@@ -1,0 +1,20 @@
+name: Test Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate with GKE
+        run: |
+          gcloud container clusters get-credentials lab-datahub2-01-ne1-warpstream-clstr \
+          --region northamerica-northeast1 --project ti-ds-tii-01
+
+      - name: Get pod details
+        run: |
+          kubectl get pods -n warpstream

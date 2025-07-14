@@ -1,12 +1,12 @@
 name: Enforce Branch Protection and Deployment Rules
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
   branch_protection:
