@@ -30,10 +30,10 @@ jobs:
       - name: Authenticate with GKE
         run: |
           export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-          gcloud container clusters get-credentials lab-datahub2-01-ne1-warpstream-clstr \
+          gcloud container clusters get-credentials cluster-1 \
             --region northamerica-northeast1 \
-            --project ti-ds-tii-01 \
-            --internal-ip
+            --project ti-ds-tii-01 
+            # --internal-ip
 
       - name: Get pod details
         run: kubectl get pods 
