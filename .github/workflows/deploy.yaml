@@ -5,7 +5,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: gh-action-runner-deployment-hgcb6-xw4k4
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
