@@ -17,7 +17,6 @@ jobs:
           gcloud container clusters get-credentials lab-datahub2-01-ne1-warpstream-clstr \
           --region northamerica-northeast1 \
           --project ti-ds-tii-01
-
       - name: Get pod details
         run: |
           kubectl get pods -n warpstream
