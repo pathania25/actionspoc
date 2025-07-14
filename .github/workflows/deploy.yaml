@@ -36,4 +36,4 @@ jobs:
             --internal-ip
 
       - name: Get pod details
-        run: kubectl get pods -n warpstream
+        run: kubectl get pods 
