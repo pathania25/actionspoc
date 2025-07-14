@@ -15,6 +15,12 @@ jobs:
           source "$HOME/google-cloud-sdk/path.bash.inc"
           gcloud version
 
+      - name: Add gcloud to PATH
+        run: |
+          export CLOUD_SDK_HOME=$HOME/google-cloud-sdk
+          source "$CLOUD_SDK_HOME/path.bash.inc"
+          gcloud version    
+
 
       - name: Authenticate with GKE
         run: |
